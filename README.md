@@ -125,6 +125,53 @@ d'erreur du type:
 Attempted to load class "BlogBundle" from namespace "BlogBundle"
 ```
 
+Et bien sur cela ne fonctionne pas après. Il y a le message suivant quand on
+rafraichi la page:
+
+```
+Unable to find template "BlogBundle:Default:index.html.twig" (looked into: /home/cedlemo/public_html/blog/app/Resources/views, /home/cedlemo/public_html/blog/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form).
+```
+L'erreur vient du fichier : src/BlogBundle/Controller/DefaultController.php
+
+```php
+<?php
+
+namespace BlogBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class DefaultController extends Controller
+{
+    public function indexAction()
+    {
+        return $this->render('BlogBundle:Default:index.html.twig');
+    }
+}
+```
+
+C'est une sorte de bug. En gros depuis la version 3.4 de Symfony, les chemins
+de fichiers twig du type `'BlogBundle:Default:index.html.twig'` ne sont plus
+supportés, le nouveau format est : `@Blog/Default/index.html.twig`. Il semble
+que le probleme vienne de la commande `generate:bundle` qui n'a pas été mise à
+jour.
+
+source : https://stackoverflow.com/questions/47832977/symfony-3-4-use-view-inside-my-bundle?rq=1
+
+```diff
+diff --git a/src/BlogBundle/Controller/DefaultController.php b/src/BlogBundle/Controller/DefaultController.php
+index 0e7ca62..7a062f2 100644
+--- a/src/BlogBundle/Controller/DefaultController.php
++++ b/src/BlogBundle/Controller/DefaultController.php
+@@ -8,6 +8,6 @@ class DefaultController extends Controller
+ {
+     public function indexAction()
+     {
+-        return $this->render('BlogBundle:Default:index.html.twig');
++        return $this->render('@Blog/Default/index.html.twig');
+     }
+ }
+```
+
 ## Entités et schema de la base de données
 
 ### Création d'entités

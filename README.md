@@ -109,3 +109,13 @@ index ba17155..06faed5 100755
          "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
      },
 ```
+
+## Entités et schema de la base de données
+
+### Création d'entités
+
+### Gestion des relations entre entités.
+
+### Création et synchronisation de la base de données.
+
+## Contrôleur et vues twig.

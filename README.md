@@ -110,6 +110,21 @@ index ba17155..06faed5 100755
      },
 ```
 
+après, il faut lancer la commande suivante afin de regénerer la liste des classes
+à charger automatiquement dans le projet:
+
+```
+composer dump-autoload
+```
+
+Si cette commande n'est pas lancée, toutes tentatives d'utiliser la console
+`php bin/console *` ou d'accèder à la page d'accueil du blog, renverra un message
+d'erreur du type:
+
+```
+Attempted to load class "BlogBundle" from namespace "BlogBundle"
+```
+
 ## Entités et schema de la base de données
 
 ### Création d'entités

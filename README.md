@@ -203,12 +203,12 @@ Created database `symfony_blog` for connection named default
 ### Création d'entités
 
 En considérant que le blog repose sur une base de données contenant quatre
-principales:
+tables principales:
 
-* articles
-* categories
-* comments
-* authors
+* article
+* categorie
+* comment
+* author
 
 on créera donc 4 "entities" :
 * Article
@@ -218,13 +218,13 @@ on créera donc 4 "entities" :
 
 #### Entity Article:
 
-Les champ de la table *articles* sont:
+Les champs de la table *articles* sont:
 * title
 * content
 * publicationDate
 * status
 
-Donc pour créer une entité *Article*, on execute la commande suivante:
+Donc pour créer une entité *Article*, on exécute la commande suivante:
 
 ```bash
 php bin/console doctrine:generate:entity                                                                                 public_html/blog  master
@@ -320,6 +320,7 @@ L'annotation:
 ```
 indique que la variable `$title` de la classe `Article` correspondra à une colonne
 nommée "title" dans la table "article".
+
 
 ### Gestion des relations entre entités.
 

@@ -202,6 +202,125 @@ Created database `symfony_blog` for connection named default
 
 ### Création d'entités
 
+En considérant que le blog repose sur une base de données contenant quatre
+principales:
+
+* articles
+* categories
+* comments
+* authors
+
+on créera donc 4 "entities" :
+* Article
+* Categorie
+* Comments
+* Author
+
+#### Entity Article:
+
+Les champ de la table *articles* sont:
+* title
+* content
+* publicationDate
+* status
+
+Donc pour créer une entité *Article*, on execute la commande suivante:
+
+```bash
+php bin/console doctrine:generate:entity                                                                                 public_html/blog  master
+
+  Welcome to the Doctrine2 entity generator
+
+This command helps you generate Doctrine2 entities.
+
+First, you need to give the entity name you want to generate.
+You must use the shortcut notation like AcmeBlogBundle:Post.
+
+The Entity shortcut name: BlogBundle:Article
+
+Determine the format to use for the mapping information.
+
+Configuration format (yml, xml, php, or annotation) [annotation]:
+
+Instead of starting with a blank entity, you can add some fields now.
+Note that the primary key will be added automatically (named id).
+
+Available types: array, simple_array, json_array, object,
+boolean, integer, smallint, bigint, string, text, datetime, datetimetz,
+date, time, decimal, float, binary, blob, guid.
+
+New field name (press <return> to stop adding fields): title
+Field type [string]:
+Field length [255]:
+Is nullable [false]:
+Unique [false]:
+
+New field name (press <return> to stop adding fields): content
+Field type [string]: text
+Is nullable [false]:
+Unique [false]:
+
+New field name (press <return> to stop adding fields): publicationDate
+Field type [string]: datetime
+Is nullable [false]:
+Unique [false]:
+
+New field name (press <return> to stop adding fields): status
+Field type [string]: boolean
+Is nullable [false]:
+Unique [false]:
+
+New field name (press <return> to stop adding fields):
+
+
+  Entity generation
+
+
+  created ./src/BlogBundle/Entity/
+  created ./src/BlogBundle/Entity/Article.php
+> Generating entity class src/BlogBundle/Entity/Article.php: OK!
+> Generating repository class src/BlogBundle/Repository/ArticleRepository.php: OK!
+
+
+  Everything is OK! Now get to work :).
+```
+
+Cette commande génère différents fichiers:
+* src/BlogBundle/Entity/Article.php
+* src/BlogBundle/Repository/ArticleRepository.php
+
+Dans *Article.php*, se trouve une classe `Article` avec des variables privées
+nommées selon les champs que l'on a rensignés ainsi que des getters/setters pour
+ces variables. De plus on trouve en commentaire des annotations faisant le lien
+entre les variables et les tables/colonnes à générer dans la base de données.
+
+L'annotation suivante:
+
+```php
+/**
+ * Article
+ *
+ * @ORM\Table(name="article")
+ * @ORM\Entity(repositoryClass="BlogBundle\Repository\ArticleRepository")
+ */
+class Article
+{
+```
+dit que la classe Article correspond à la table "article".
+
+L'annotation:
+
+```php
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+```
+indique que la variable `$title` de la classe `Article` correspondra à une colonne
+nommée "title" dans la table "article".
+
 ### Gestion des relations entre entités.
 
 ### Création et synchronisation de la base de données.

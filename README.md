@@ -206,14 +206,14 @@ En considérant que le blog repose sur une base de données contenant quatre
 tables principales:
 
 * article
-* categorie
+* category
 * comment
 * author
 
 on créera donc 4 "entities" :
 * Article
-* Categorie
-* Comments
+* Category
+* Comment
 * Author
 
 #### Entity Article:
@@ -321,6 +321,59 @@ L'annotation:
 indique que la variable `$title` de la classe `Article` correspondra à une colonne
 nommée "title" dans la table "article".
 
+#### Entity Category
+
+La création de cette entité se fait comme précédement:
+
+```
+New field name (press <return> to stop adding fields): name
+Field type [string]:
+Is nullable [false]:
+Unique [false]:
+```
+
+#### Entity Author
+
+```
+New field name (press <return> to stop adding fields): name
+Field type [string]:
+Is nullable [false]:
+Unique [false]:
+New field name (press <return> to stop adding fields): biography
+Field type [string]: text
+Is nullable [false]:
+Unique [false]:
+```
+
+#### Entity Comment
+
+```
+New field name (press <return> to stop adding fields): email
+Field type [string]:
+Is nullable [false]:
+Unique [false]:
+New field name (press <return> to stop adding fields): content
+Field type [string]: text
+Is nullable [false]:
+Unique [false]:
+New field name (press <return> to stop adding fields): datePublication
+Field type [string]: datetime
+Is nullable [false]:
+Unique [false]:
+New field name (press <return> to stop adding fields): status
+Field type [string]: boolean
+Is nullable [false]:
+Unique [false]:
+```
+
+#### Générer les tables de la base de données:
+
+Après chaque création d'"entity" ou après la création de toutes les "entities",
+il est possible de générer les tables correspondantes avec la commande suivante:
+
+```bash
+php bin/console doctrine:schema:udpate --force
+```
 
 ### Gestion des relations entre entités.
 

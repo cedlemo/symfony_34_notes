@@ -376,6 +376,112 @@ php bin/console doctrine:schema:udpate --force
 ```
 
 ### Gestion des relations entre entités.
+Avant de créer les relations, il faut les identifier:
+
+* Un article a un auteur, un auteur peut créer plusieurs articles.
+
+Ici on se retrouve dans le même cas que dans l'exemple de la [documentation](http://symfony.com/doc/3.4/doctrine/associations.html#relationship-mapping-metadata). D'un point de vue de l'entité
+`Article`, plusieurs articles peuvent être reliés à un auteur :`ManyToOne`. D'un
+point de vue de l'entité `Author`, un auteur est lié à plusieurs articles : `OneToMany`.
+
+Pour mettre en place cette relation bi-directionnelle, il faut:
+* créer une variable `$author` et ses getter/setter dans `Article` ainsi que les
+annotations nécessaires pour `doctrine`.
+* créer une variable `$articles` et ses getter/setter dans `Author` ainsi que les
+annotations nécessaires pour `doctrine`.
+
+Un bon diff vieux diff:
+
+```diff
+diff --git a/src/BlogBundle/Entity/Article.php b/src/BlogBundle/Entity/Article.php
+index 8a86a61..a9ea99c 100644
+--- a/src/BlogBundle/Entity/Article.php
++++ b/src/BlogBundle/Entity/Article.php
+@@ -49,6 +49,10 @@ class Article
+      */
+     private $status;
+
++    /**
++     * @ORM\ManyToOne(targetEntity="BlogBundle\Entity\Author", inversedBy="articles")
++     */
++    private $author;
+
+     /**
+      * Get id
+@@ -155,5 +159,24 @@ class Article
+     {
+         return $this->status;
+     }
+-}
+
++    /**
++     * Get author
++     * @return Author
++     */
++    public function getAuthor()
++    {
++	return $this->author;
++    }
++
++    /**
++     * Set author
++     * @param Author $author
++     * @return Article
++     */
++    public function setAuthor($author)
++    {
++	$this->author = $author;
++	return $this;
++    }
++}
+diff --git a/src/BlogBundle/Entity/Author.php b/src/BlogBundle/Entity/Author.php
+index 3eb009f..351f055 100644
+--- a/src/BlogBundle/Entity/Author.php
++++ b/src/BlogBundle/Entity/Author.php
+@@ -36,6 +36,11 @@ class Author
+     private $biography;
+
+
++    /**
++     * @ORM\OneToMany(targetEntity="BlogBundle\Entity\Article", mappedBy="author")
++     */
++    private $articles;
++
+     /**
+      * Get id
+      *
+@@ -93,5 +98,24 @@ class Author
+     {
+         return $this->biography;
+     }
+-}
+
++    /**
++     * Set articles
++     * @param mixed Article
++     * @return Author
++     */
++    public function setArticles($articles)
++    {
++	$this->articles = $articles;
++	return $this;
++    }
++
++    /**
++     * Get articles
++     * @return mixed Article
++     */
++    public function getArticles()
++    {
++	return $this->articles;
++    }
++}
+```
+Pour générer la relation, il suffit de mettre à jour la base de données avec:
+
+```
+php bin/console doctrine:schema:update --force
+```
 
 ### Création et synchronisation de la base de données.
 

@@ -174,6 +174,32 @@ index 0e7ca62..7a062f2 100644
 
 ## Entités et schema de la base de données
 
+La [configuration de la base de données](http://symfony.com/doc/3.4/best_practices/configuration.html) peut être retrouvée dans le fichier
+*app/config/parameters.yml*. Dans mon cas mon fichier ressemble à ceci:
+
+```yaml
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: symfony_blog
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: azerlkjazerlkjazerlkjazerlmkjazer
+```
+
+Avant toutes choses, il faut créer la base de données. Les tables de cette base
+et leurs relations base seront ajoutées au fur et à mesure de leurs créations.
+
+```bash
+php bin/console doctrine:database:create
+Created database `symfony_blog` for connection named default
+```
+
 ### Création d'entités
 
 ### Gestion des relations entre entités.

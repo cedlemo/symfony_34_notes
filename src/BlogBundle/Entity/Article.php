@@ -49,6 +49,10 @@ class Article
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="BlogBundle\Entity\Author", inversedBy="articles")
+     */
+    private $author;
 
     /**
      * Get id
@@ -155,5 +159,24 @@ class Article
     {
         return $this->status;
     }
-}
 
+    /**
+     * Get author
+     * @return Author
+     */
+    public function getAuthor()
+    {
+	return $this->author;
+    }
+
+    /**
+     * Set author
+     * @param Author $author
+     * @return Article
+     */
+    public function setAuthor($author)
+    {
+	$this->author = $author;
+	return $this;
+    }
+}

@@ -37,6 +37,11 @@ class Author
 
 
     /**
+     * @ORM\OneToMany(targetEntity="BlogBundle\Entity\Article", mappedBy="author")
+     */
+    private $articles;
+
+    /**
      * Get id
      *
      * @return int
@@ -93,5 +98,24 @@ class Author
     {
         return $this->biography;
     }
-}
 
+    /**
+     * Set articles
+     * @param mixed Article
+     * @return Author
+     */
+    public function setArticles($articles)
+    {
+	$this->articles = $articles;
+	return $this;
+    }
+
+    /**
+     * Get articles
+     * @return mixed Article
+     */
+    public function getArticles()
+    {
+	return $this->articles;
+    }
+}

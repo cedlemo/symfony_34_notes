@@ -491,7 +491,7 @@ article peut avoir plusieur commentaires `OneToMany`.
 Dans la classe `Comment`, on crée une variable privée `$articles`, ses setter/getter
 ainsi que les annotations décrivant la relation avec la classe Article.
 
-```php
+```diff
 diff --git a/src/BlogBundle/Entity/Comment.php b/src/BlogBundle/Entity/Comment.php
 index 9dd1e8b..c7f8034 100644
 --- a/src/BlogBundle/Entity/Comment.php
@@ -535,11 +535,13 @@ index 9dd1e8b..c7f8034 100644
 +    }
 +}
 ```
+
 Dans la classe `Article` on ajoute la variable `$comments`, son getter, son
 setter ainsi que les annotations nécessaires à la description de la relation
 avec la classe `Comment`.
 
-```php
+
+```diff
 diff --git a/src/BlogBundle/Entity/Article.php b/src/BlogBundle/Entity/Article.php
 index a9ea99c..ac7405b 100644
 --- a/src/BlogBundle/Entity/Article.php

@@ -60,6 +60,11 @@ class Article
     private $comments;
 
     /**
+     * @ORM\ManyToMany(targetEntity="BlogBundle\Entity\Category", inversedBy="articles")
+     */
+    private $categories;
+
+    /**
      * Get id
      *
      * @return int
@@ -202,6 +207,26 @@ class Article
     public function setArticles($articles)
     {
 	$this->articles = $articles;
+        return $this;
+    }
+
+    /**
+     * Get categories
+     * @return mixed Aricle
+     */
+    public function getCategories()
+    {
+	return $this->categories;
+    }
+
+    /**
+     * Set categories
+     * @param mixed Article
+     * @return Article
+     */
+    public function setCategories($categories)
+    {
+	$this->categories = $categories;
         return $this;
     }
 }

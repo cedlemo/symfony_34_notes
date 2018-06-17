@@ -30,6 +30,11 @@ class Category
 
 
     /**
+     * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Article", mappedBy="categories")
+     */
+    private $articles;
+
+    /**
      * Get id
      *
      * @return int
@@ -62,5 +67,24 @@ class Category
     {
         return $this->name;
     }
-}
 
+    /**
+     * Set articles
+     * @param mixed Article
+     * @return Category
+     */
+    public function setArticles($articles)
+    {
+	$this->articles = $articles;
+        return $this;
+    }
+
+    /**
+     * Get articles
+     * @return mixed Article
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+}

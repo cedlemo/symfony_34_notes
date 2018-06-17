@@ -605,5 +605,41 @@ php bin/console doctrine:schema:update --force
 
 #### Relation bidirectionnelle ManyToMany
 
+##### La relation Article Category
+
+* un article peut avoir plusieurs catégories, une catégorie peut décrirent
+plusieurs articles.
+
+La documentation relative a ces relations `ManyToMany` se trouve [ici](
+https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#many-to-many-bidirectional
+).
+Dans ce type de relation, il va falloir décider quel entité va être responsable
+de la relation. Ici c'est l'Article puisque l'on associe obligatoirement
+une catégorie lors de la création d'un article.
+
+Donc dans la classe `Article`, on ajoute une variable privée `$categories` avec
+les fonctions qui vont bien et l'annotation suivante:
+
+```php
+/**
+ * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Category", inversedBy="articles")
+ */
+```
+
+Dans la classe `Category`, on ajoute la variables `$articles` avec ses setter/getter
+et l'annotation suivante:
+
+```php
+/**
+ * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Article", mappedBy="categories")
+ */
+```
+
+Après vérification, on lance la mise à jour de la base de données.
+
+```bash
+php bin/console doctrine:schema:validate
+php bin/console doctrine:schema:update --force
+```
 
 ## Contrôleur et vues twig.

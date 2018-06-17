@@ -55,6 +55,11 @@ class Article
     private $author;
 
     /**
+     * @ORM\OneToMany(targetEntity="BlogBundle\Entity\Comment", mappedBy="article")
+     */
+    private $comments;
+
+    /**
      * Get id
      *
      * @return int
@@ -178,5 +183,25 @@ class Article
     {
 	$this->author = $author;
 	return $this;
+    }
+
+    /**
+     * Get articles
+     * @return mixed Aricle
+     */
+    public function getArticles()
+    {
+	return $this->articles;
+    }
+
+    /**
+     * Set articles
+     * @param mixed Article
+     * @return Article
+     */
+    public function setArticles($articles)
+    {
+	$this->articles = $articles;
+        return $this;
     }
 }

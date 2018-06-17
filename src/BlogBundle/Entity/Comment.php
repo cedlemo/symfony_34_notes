@@ -49,6 +49,11 @@ class Comment
      */
     private $status;
 
+    /**
+     * @var Article
+     * @ORM\ManyToOne(targetEntity="\BlogBundle\Entity\Article", inversedBy="comments")
+     */
+    private $article;
 
     /**
      * Get id
@@ -155,5 +160,24 @@ class Comment
     {
         return $this->status;
     }
-}
 
+    /**
+     * Set article
+     * @param Article $article
+     * @return Comment
+     */
+    public function setArticle(Article $article)
+    {
+	$this->article = $article;
+	return $this;
+    }
+
+    /**
+     * Get article
+     * @return Article
+     */
+    public function getArticle()
+    {
+	return $this->article;
+    }
+}

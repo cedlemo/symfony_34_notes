@@ -483,6 +483,118 @@ Pour générer la relation, il suffit de mettre à jour la base de données avec
 php bin/console doctrine:schema:update --force
 ```
 
+* Un commentaire est lié à un article, un article peut avoir plusieurs commentaires.
+On se trouve dans le même cas que précédement.  D'un point de vue du commentaire,
+plusieurs commentaires peuvent être liés à un article : `ManyToOne` et un
+article peut avoir plusieur commentaires `OneToMany`.
+
+Dans la classe `Comment`, on crée une variable privée `$articles`, ses setter/getter
+ainsi que les annotations décrivant la relation avec la classe Article.
+
+```php
+diff --git a/src/BlogBundle/Entity/Comment.php b/src/BlogBundle/Entity/Comment.php
+index 9dd1e8b..c7f8034 100644
+--- a/src/BlogBundle/Entity/Comment.php
++++ b/src/BlogBundle/Entity/Comment.php
+@@ -49,6 +49,11 @@ class Comment
+      */
+     private $status;
+
++    /**
++     * @var Article
++     * @ORM\ManyToOne(targetEntity="\BlogBundle\Entity\Article", inversedBy="comments")
++     */
++    private $article;
+
+     /**
+      * Get id
+@@ -155,5 +160,24 @@ class Comment
+     {
+         return $this->status;
+     }
+-}
+
++    /**
++     * Set article
++     * @param Article $article
++     * @return Comment
++     */
++    public function setArticle(Article $article)
++    {
++       $this->article = $article;
++       return $this;
++    }
++
++    /**
++     * Get article
++     * @return Article
++     */
++    public function getArticle()
++    {
++       return $this->article;
++    }
++}
+```
+Dans la classe `Article` on ajoute la variable `$comments`, son getter, son
+setter ainsi que les annotations nécessaires à la description de la relation
+avec la classe `Comment`.
+
+```php
+diff --git a/src/BlogBundle/Entity/Article.php b/src/BlogBundle/Entity/Article.php
+index a9ea99c..ac7405b 100644
+--- a/src/BlogBundle/Entity/Article.php
++++ b/src/BlogBundle/Entity/Article.php
+@@ -54,6 +54,11 @@ class Article
+      */
+     private $author;
+
++    /**
++     * @ORM\OneToMany(targetEntity="BlogBundle\Entity\Comment", mappedBy="article")
++     */
++    private $comments;
++
+     /**
+      * Get id
+      *
+@@ -179,4 +184,24 @@ class Article
+        $this->author = $author;
+        return $this;
+     }
++
++    /**
++     * Get articles
++     * @return mixed Aricle
++     */
++    public function getArticles()
++    {
++       return $this->articles
++    }
++
++    /**
++     * Set articles
++     * @param mixed Article
++     * @return Article
++     */
++    public function setArticles($articles)
++    {
++       $this->articles = $articles;
++        return $this;
++    }
+ }
+```
+
+Avant de mettre à jour la base de données, il est possible de valider les
+annotations:
+
+```bash
+php bin/console doctrine:schema:validate
+```
+Comme précédement les changements sur la base de données sont générés avec:
+
+```bash
+php bin/console doctrine:schema:update --force
+```
+
 ### Création et synchronisation de la base de données.
 
 ## Contrôleur et vues twig.

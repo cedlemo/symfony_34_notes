@@ -378,6 +378,10 @@ php bin/console doctrine:schema:udpate --force
 ### Gestion des relations entre entités.
 Avant de créer les relations, il faut les identifier:
 
+#### Relation bidirectionnelle ManyToOne/OneToMany
+
+##### Relation Article Author:
+
 * Un article a un auteur, un auteur peut créer plusieurs articles.
 
 Ici on se retrouve dans le même cas que dans l'exemple de la [documentation](http://symfony.com/doc/3.4/doctrine/associations.html#relationship-mapping-metadata). D'un point de vue de l'entité
@@ -482,6 +486,8 @@ Pour générer la relation, il suffit de mettre à jour la base de données avec
 ```
 php bin/console doctrine:schema:update --force
 ```
+
+##### Relation Article Comment
 
 * Un commentaire est lié à un article, un article peut avoir plusieurs commentaires.
 On se trouve dans le même cas que précédement.  D'un point de vue du commentaire,
@@ -597,6 +603,7 @@ Comme précédement les changements sur la base de données sont générés avec
 php bin/console doctrine:schema:update --force
 ```
 
-### Création et synchronisation de la base de données.
+#### Relation bidirectionnelle ManyToMany
+
 
 ## Contrôleur et vues twig.

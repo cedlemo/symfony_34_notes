@@ -1,7 +1,20 @@
-# Symfony 3.4 notes
+# Symfony 3.4 notes: Creation d'un simple blog.
 
-
-# Creation d'un simple blog.
+* [Installation et configuration](#installation-et-configuration)
+* [Generation d'un bundle](#generation-d-'-bundle)
+* [Entités et schema de la base de données](entités-et-schema-de-la-base-de-données)
+  * [Création d'entités](création-d'entités)
+    * [Entity Article](entity-article)
+    * [Entity Category](entity-category)
+    * [Entity Author](entity-author)
+    * [Entity Comment](entity-comment)
+    * [Générer les tables de la base de données](générer-les-tables-de-la-base-de-données)
+  * [Gestion des relations entre entités](gestion-des-relations-entre-entités)
+    * [Relation bidirectionnelle ManyToOne OneToMany](relation-bidirectionnelle-manytoone-onetomany)
+      * [Relation Article Author](relation-article-author)
+      * [Relation Article Comment](relation-article-comment)
+    * [Relation bidirectionnelle ManyToMany](relation-bidirectionnelle-manytomany)
+      * [Relation Article Category](relation-article-category)
 
 ## Installation et configuration
 
@@ -38,7 +51,7 @@ DirectoryIndex app_dev.php
     RewriteRule ^ %{ENV:BASE}/app_dev.php [L]
 ```
 
-## generation d'un bundle
+## Generation d'un bundle
 
 un projet a au moins un bundle, les bundles sont créés en ligne de commande:
 
@@ -216,7 +229,7 @@ on créera donc 4 "entities" :
 * Comment
 * Author
 
-#### Entity Article:
+#### Entity Article
 
 Les champs de la table *articles* sont:
 * title
@@ -366,7 +379,7 @@ Is nullable [false]:
 Unique [false]:
 ```
 
-#### Générer les tables de la base de données:
+#### Générer les tables de la base de données
 
 Après chaque création d'"entity" ou après la création de toutes les "entities",
 il est possible de générer les tables correspondantes avec la commande suivante:
@@ -375,12 +388,12 @@ il est possible de générer les tables correspondantes avec la commande suivant
 php bin/console doctrine:schema:udpate --force
 ```
 
-### Gestion des relations entre entités.
+### Gestion des relations entre entités
 Avant de créer les relations, il faut les identifier:
 
-#### Relation bidirectionnelle ManyToOne/OneToMany
+#### Relation bidirectionnelle ManyToOne OneToMany
 
-##### Relation Article Author:
+##### Relation Article Author
 
 * Un article a un auteur, un auteur peut créer plusieurs articles.
 

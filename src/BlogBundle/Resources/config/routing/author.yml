@@ -1,0 +1,24 @@
+author_index:
+    path:     /
+    defaults: { _controller: "BlogBundle:Author:index" }
+    methods:  GET
+
+author_show:
+    path:     /{id}/show
+    defaults: { _controller: "BlogBundle:Author:show" }
+    methods:  GET
+
+author_new:
+    path:     /new
+    defaults: { _controller: "BlogBundle:Author:new" }
+    methods:  [GET, POST]
+
+author_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BlogBundle:Author:edit" }
+    methods:  [GET, POST]
+
+author_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BlogBundle:Author:delete" }
+    methods:  DELETE

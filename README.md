@@ -16,8 +16,10 @@
     * [Relation bidirectionnelle ManyToMany](#relation-bidirectionnelle-manytomany)
       * [Relation Article Category](#relation-article-category)
  * [Controleur et vues twig](#contrôleur-et-vues-twig)
-   * [Creation des contrôleurs](#creation-des-contrôleurs)
-
+   * [Creation des contrôleurs : CRUD](#creation-des-contrôleurs-:-crud)
+     * [CRUD Article](#crud-article)
+     * [CRUD Category](#crud-category)
+     * [CRUD Comment et Author](#crud-comment-et-author)
 
 ## Installation et configuration
 
@@ -660,7 +662,7 @@ php bin/console doctrine:schema:update --force
 
 ## Contrôleur et vues twig.
 
-### Creation des contrôleurs
+### Creation des contrôleurs : CRUD.
 
 C'est dans le contrôleur que l'on trouvera la logique applicative concernant les
 actions réalisées par l'utilisateur. On peut tout à fait générer un à un les
@@ -677,6 +679,8 @@ génériques pour les actions de base:
 - Read
 - Update
 - Delete.
+
+#### CRUD Category
 
 Avec la commande suivante pour l'entity `BlogBundle:Category`:
 
@@ -713,3 +717,51 @@ Rien que avec cela, les urls suivantes sont fonctionnelles:
 * http://blog.fr/admin/category/1/show
 * http://blog.fr/admin/category/1/delete
 
+#### CRUD Article.
+
+Même commande que précédement:
+
+```
+php bin/console doctrine:generate:crud
+```
+
+Si l'erreur suivante apparait:
+
+```
+- Import the bundle's routing resource in the bundle routing file
+  (/home/cedlemo/public_html/blog/src/BlogBundle/Resources/config/routing.yml).
+
+    blog_admin_article:
+        resource: "@BlogBundle/Resources/config/routing/article.yml"
+        prefix:   /admin/article
+```
+
+C'est que l'import des routes n'a pu se faire. Il suffit de rajouter la partie
+manquante dans le `routing.yml` du bundle.
+
+```diff
+diff --git a/src/BlogBundle/Resources/config/routing.yml b/src/BlogBundle/Resources/config/routing.yml
+index 7ac2d32..ee41b2f 100644
+--- a/src/BlogBundle/Resources/config/routing.yml
++++ b/src/BlogBundle/Resources/config/routing.yml
+@@ -2,6 +2,10 @@ blog_admin_category:
+     resource: "@BlogBundle/Resources/config/routing/category.yml"
+     prefix:   /admin/category
+
++blog_admin_article:
++        resource: "@BlogBundle/Resources/config/routing/article.yml"
++        prefix:   /admin/article
++
+ blog_homepage:
+     path:     /
+     defaults: { _controller: BlogBundle:Default:index }
+```
+
+#### CRUD Comment et Author.
+
+La generation peut se faire sans le côté interactif avec:
+
+```
+php bin/console doctrine:generate:crud BlogBundle:Comment -n --format=yml --with-write
+php bin/console doctrine:generate:crud BlogBundle:Author -n --format=yml --with-write
+```

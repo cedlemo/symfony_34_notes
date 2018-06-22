@@ -15,6 +15,9 @@
       * [Relation Article Comment](#relation-article-comment)
     * [Relation bidirectionnelle ManyToMany](#relation-bidirectionnelle-manytomany)
       * [Relation Article Category](#relation-article-category)
+ * [Controleur et vues twig](#contrôleur-et-vues-twig)
+   * [Creation des contrôleurs](#creation-des-contrôleurs)
+
 
 ## Installation et configuration
 
@@ -656,6 +659,8 @@ php bin/console doctrine:schema:update --force
 ```
 
 ## Contrôleur et vues twig.
+
+### Creation des contrôleurs
 
 C'est dans le contrôleur que l'on trouvera la logique applicative concernant les
 actions réalisées par l'utilisateur. On peut tout à fait générer un à un les

@@ -3,8 +3,12 @@ blog_admin_category:
     prefix:   /admin/category
 
 blog_admin_article:
-        resource: "@BlogBundle/Resources/config/routing/article.yml"
-        prefix:   /admin/article
+    resource: "@BlogBundle/Resources/config/routing/article.yml"
+    prefix:   /admin/article
+
+blog_comment:
+    resource: "@BlogBundle/Resources/config/routing/comment.yml"
+    prefix:   /comment
 
 blog_homepage:
     path:     /

@@ -1,3 +1,7 @@
+blog_admin_category:
+    resource: "@BlogBundle/Resources/config/routing/category.yml"
+    prefix:   /admin/category
+
 blog_homepage:
     path:     /
     defaults: { _controller: BlogBundle:Default:index }

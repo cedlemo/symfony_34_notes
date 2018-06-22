@@ -656,3 +656,55 @@ php bin/console doctrine:schema:update --force
 ```
 
 ## Contrôleur et vues twig.
+
+C'est dans le contrôleur que l'on trouvera la logique applicative concernant les
+actions réalisées par l'utilisateur. On peut tout à fait générer un à un les
+contrôleurs nécessaires avec la commande:
+
+```
+php bin/console doctrine:generate:controleur
+```
+
+Mais on peut aussi utiliser générer directement un ensemble de contrôleurs
+génériques pour les actions de base:
+
+- Create
+- Read
+- Update
+- Delete.
+
+Avec la commande suivante pour l'entity `BlogBundle:Category`:
+
+```
+php bin/console doctrine:generate:crud
+```
+
+On choisira de générer les actions permettant d'écrire, d'insérer des données
+dans la base de données:
+
+```
+Do you want to generate the "write" actions [no]? yes
+```
+
+Ensuite les routes seront gérées via des fichiers yml:
+
+```
+Determine the format to use for the generated CRUD.
+Configuration format (yml, xml, php, or annotation) [annotation]: yml
+```
+
+La commande va générer le contrôleur dans :
+- src/BlogBundle/Controller/CategoryController.php
+
+Des fichiers de vues twig et des formulaires pour la création et l'édition
+de l'entité `Category` dans les répertoires:
+- src/BlogBundle/Form/
+- app/Resources/views/category/
+
+Rien que avec cela, les urls suivantes sont fonctionnelles:
+
+* http://blog.fr/admin/category/
+* http://blog.fr/admin/category/new
+* http://blog.fr/admin/category/1/show
+* http://blog.fr/admin/category/1/delete
+

@@ -22,7 +22,7 @@ class CommentController extends Controller
 
         $comments = $em->getRepository('BlogBundle:Comment')->findAll();
 
-        return $this->render('comment/index.html.twig', array(
+        return $this->render('@Blog/comment/index.html.twig', array(
             'comments' => $comments,
         ));
     }
@@ -45,7 +45,7 @@ class CommentController extends Controller
             return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
         }
 
-        return $this->render('comment/new.html.twig', array(
+        return $this->render('@Blog/comment/new.html.twig', array(
             'comment' => $comment,
             'form' => $form->createView(),
         ));
@@ -59,7 +59,7 @@ class CommentController extends Controller
     {
         $deleteForm = $this->createDeleteForm($comment);
 
-        return $this->render('comment/show.html.twig', array(
+        return $this->render('@Blog/comment/show.html.twig', array(
             'comment' => $comment,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -81,7 +81,7 @@ class CommentController extends Controller
             return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
         }
 
-        return $this->render('comment/edit.html.twig', array(
+        return $this->render('@Blog/comment/edit.html.twig', array(
             'comment' => $comment,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

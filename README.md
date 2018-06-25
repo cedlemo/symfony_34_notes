@@ -20,6 +20,7 @@
      * [CRUD Article](#crud-article)
      * [CRUD Category](#crud-category)
      * [CRUD Comment et Author](#crud-comment-et-author)
+   * [Le routage](#le-routage)
 
 ## Installation et configuration
 
@@ -680,6 +681,15 @@ génériques pour les actions de base:
 - Update
 - Delete.
 
+Dans cet exemple on considère que toutes les actions que l'on va générer, devront
+être accessible via les routes suivantes:
+* /admin/article
+* /admin/category
+* /admin/author
+* /admin/comment
+Cela permettra de séparer la gestion (suppression, édition, création ...) des
+éléments du site afin de faciliter l'authentification.
+
 #### CRUD Category
 
 Avec la commande suivante pour l'entity `BlogBundle:Category`:
@@ -764,4 +774,60 @@ La generation peut se faire sans le côté interactif avec:
 ```
 php bin/console doctrine:generate:crud BlogBundle:Comment -n --format=yml --with-write
 php bin/console doctrine:generate:crud BlogBundle:Author -n --format=yml --with-write
+```
+
+### Le routage:
+
+La gestion des "routes", c'est à dire les urls correspondant aux contrôleurs et
+à leurs actions, se fait dans le fichier *BlogBundle/Ressources/config/routing.yml*.
+L'ajout des CRUD pour chaque entités a séparer les routes dans différents fichier.
+
+```
+tree Resources/config                                                                                                      src/BlogBundle  master
+Resources/config
+├── routing
+│   ├── article.yml
+│   ├── author.yml
+│   ├── category.yml
+│   └── comment.yml
+├── routing.yml
+```
+
+Pour le cas `Article`, on le retrouve dans le fichier *routing.yml* :
+
+```yaml
+blog_admin_article:
+    resource: "@BlogBundle/Resources/config/routing/article.yml"
+    prefix:   /admin/article
+
+```
+On prefixe donc toutes les routes en lien avec la gestion des articles par `/admin/article`
+et le fichier contenant le reste de ces routes est indiqué par le champ `resource`. Dans
+ce fichier se trouve les routes en liens avec les actions du contrôleur `ArticleController`.:
+
+```yaml
+admin_article_index:
+    path:     /
+    defaults: { _controller: "BlogBundle:Article:index" }
+    methods:  GET
+
+admin_article_show:
+    path:     /{id}/show
+    defaults: { _controller: "BlogBundle:Article:show" }
+    methods:  GET
+
+admin_article_new:
+    path:     /new
+    defaults: { _controller: "BlogBundle:Article:new" }
+    methods:  [GET, POST]
+
+admin_article_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BlogBundle:Article:edit" }
+    methods:  [GET, POST]
+
+admin_article_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BlogBundle:Article:delete" }
+    methods:  DELETE
 ```

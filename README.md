@@ -21,6 +21,9 @@
      * [CRUD Category](#crud-category)
      * [CRUD Comment et Author](#crud-comment-et-author)
    * [Le routage](#le-routage)
+   * [Les vues twig](#les-vues-twig)
+     * [Configuration des chemins](#configuration-des-chemins)
+     * [Présentation des templates](#présentation-des-templates)
 
 ## Installation et configuration
 
@@ -831,3 +834,129 @@ admin_article_delete:
     defaults: { _controller: "BlogBundle:Article:delete" }
     methods:  DELETE
 ```
+
+### Les vues twig
+
+#### Configuration des chemins
+
+Par défaut, la génération des actions CRUD pour l'entité `Article`, a créé des
+vues dans *app/Resources/views*:
+
+* app/Resources/views/article/edit.html.twig
+* app/Resources/views/article/index.html.twig
+* app/Resources/views/article/new.html.twig
+* app/Resources/views/article/show.html.twig
+
+Ces vues sont appelées dans l'action associée. Par exemple, la vue *index.html*,
+est appelée dans `ArticleController`, par:
+
+```php
+   /**
+     * Lists all article entities.
+     *
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $articles = $em->getRepository('BlogBundle:Article')->findAll();
+
+        return $this->render('article/index.html.twig', array(
+            'articles' => $articles,
+        ));
+    }
+```
+
+Il est plus intéressant d'avoir les vues en lien avec un bundle dans ce bundle.
+Donc il faut déplacer les vues de *app/Resources/views* à *BlogBundle/Resources/views*.
+
+De plus, l'utilisation d'annotations pour faire le lien entre une vue et un
+contrôleur permet de grandement simplifier le code. Exemple avec `ArticleController.indexAction`:
+
+```diff
+diff --git a/src/BlogBundle/Controller/ArticleController.php b/src/BlogBundle/Controller/ArticleController.php
+index 14a97d5..7ca9ca6 100644
+--- a/src/BlogBundle/Controller/ArticleController.php
++++ b/src/BlogBundle/Controller/ArticleController.php
+@@ -5,6 +5,7 @@ namespace BlogBundle\Controller;
+ use BlogBundle\Entity\Article;
+ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+ use Symfony\Component\HttpFoundation\Request;
++use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+ /**
+  * Article controller.
+@@ -15,6 +16,7 @@ class ArticleController extends Controller
+     /**
+      * Lists all article entities.
+      *
++     * @Template("@Blog/article/index.html.twig")
+      */
+     public function indexAction()
+     {
+@@ -22,9 +24,7 @@ class ArticleController extends Controller
+
+         $articles = $em->getRepository('BlogBundle:Article')->findAll();
+
+-        return $this->render('article/index.html.twig', array(
+-            'articles' => $articles,
+-        ));
++        return ['articles' => $articles];
+     }
+
+```
+
+On notera que l'on peut ne pas indiquer d'argument avec `@Template`. Symfony fera
+automatiquement le lien entre une action nommée `trucAction` et un fichier de
+template nommé `truc.html.twig`.
+
+Si l'on décide de ne pas utiliser l'annotation `@Template`, et que l'on décide
+de mettre les vues dans le bundle, il faut utiliser une [notation particulière
+pour indiquer le chemin d'accès des vues](https://symfony.com/doc/3.4/templating.html#referencing-templates-in-a-bundle).
+
+Par exemple pour le bundle `BlogBundle` et les fichiers twig mis dans *src/BlogBundle/Resources/views/* :
+
+```diff
+diff --git a/src/BlogBundle/Controller/CommentController.php b/src/BlogBundle/Controller/CommentController.php
+index a53dac7..dc6d010 100644
+--- a/src/BlogBundle/Controller/CommentController.php
++++ b/src/BlogBundle/Controller/CommentController.php
+@@ -22,7 +22,7 @@ class CommentController extends Controller
+
+         $comments = $em->getRepository('BlogBundle:Comment')->findAll();
+
+-        return $this->render('comment/index.html.twig', array(
++        return $this->render('@Blog/comment/index.html.twig', array(
+             'comments' => $comments,
+         ));
+     }
+@@ -45,7 +45,7 @@ class CommentController extends Controller
+             return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
+         }
+
+-        return $this->render('comment/new.html.twig', array(
++        return $this->render('@Blog/comment/new.html.twig', array(
+             'comment' => $comment,
+             'form' => $form->createView(),
+         ));
+@@ -59,7 +59,7 @@ class CommentController extends Controller
+     {
+         $deleteForm = $this->createDeleteForm($comment);
+
+-        return $this->render('comment/show.html.twig', array(
++        return $this->render('@Blog/comment/show.html.twig', array(
+             'comment' => $comment,
+             'delete_form' => $deleteForm->createView(),
+         ));
+@@ -81,7 +81,7 @@ class CommentController extends Controller
+             return $this->redirectToRoute('comment_edit', array('id' => $comment->getId()));
+         }
+
+-        return $this->render('comment/edit.html.twig', array(
++        return $this->render('@Blog/comment/edit.html.twig', array(
+             'comment' => $comment,
+             'edit_form' => $editForm->createView(),
+             'delete_form' => $deleteForm->createView(),
+```
+
+##### Présentation des templates

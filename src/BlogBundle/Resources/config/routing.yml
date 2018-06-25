@@ -8,11 +8,11 @@ blog_admin_article:
 
 blog_comment:
     resource: "@BlogBundle/Resources/config/routing/comment.yml"
-    prefix:   /comment
+    prefix:   /admin/comment
 
 blog_author:
     resource: "@BlogBundle/Resources/config/routing/author.yml"
-    prefix:   /author
+    prefix:   /admin/author
 
 blog_homepage:
     path:     /

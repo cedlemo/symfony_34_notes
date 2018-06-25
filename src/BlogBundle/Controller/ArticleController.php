@@ -16,7 +16,7 @@ class ArticleController extends Controller
     /**
      * Lists all article entities.
      *
-     * @Template("@Blog/article/index.html.twig")
+     * @Template()
      */
     public function indexAction()
     {

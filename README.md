@@ -975,3 +975,164 @@ les fonctionnalités d'enregistrement/inscription d'utilisateurs, la création d
 page de profile et le reset de mot de passe.
 
 ### Installation de FOSUser
+
+L'installation se fait via `composer` dans le répertoire *blog*:
+
+```bash
+composer require friendsofsymfony/user-bundle "~2.0"
+```
+
+Ensuite on l'active dans *app/AppKernel.php* :
+
+```diff
+iff --git a/app/AppKernel.php b/app/AppKernel.php
+index b6b11fe..20bb563 100755
+--- a/app/AppKernel.php
++++ b/app/AppKernel.php
+@@ -18,6 +18,7 @@ class AppKernel extends Kernel
+             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+             new AppBundle\AppBundle(),
+             new BlogBundle\BlogBundle(),
++           new FOS\UserBundle\FOSUserBundle(),
+         ];
+
+         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+```
+
+Etant donné que l'idée est d'enregistrer les utilisateurs en base de données,
+il faut créer une classe `User`, cette classe va étendre la classe `User`
+fournie par `FOSUser` dans le fichier *vendor/friendsofsymfony/user-bundle/Model/User.php*.
+La classe de base `User` contient déjà la pluspart des champs nécessaires:
+
+```php
+abstract class User implements UserInterface, GroupableInterface                                                                             [491/693]
+{
+    /**
+     * @var mixed
+     */
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * @var string
+     */
+    protected $usernameCanonical;
+
+    /**
+     * @var string
+     */
+    protected $email;
+
+    /**
+     * @var string
+     */
+    protected $emailCanonical;
+
+    /**
+     * @var bool
+     */
+    protected $enabled;
+
+    /**
+     * The salt to use for hashing.
+     *
+     * @var string
+     */
+    protected $salt;
+
+    /**
+     * Encrypted password. Must be persisted.
+     *
+     * @var string
+     */
+    protected $password;
+```
+
+La création de la classe suivante dans *src/BlogBundle/Entity/* est suffisante:
+
+```php
+<?php
+// src/AppBundle/Entity/User.php
+
+namespace AppBundle\Entity;
+
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="fos_users")
+ */
+class User extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+}
+```
+
+Maintenant, il faut adapter le fichier `app/config/security.yml`. Dans ce fichier,
+on définit la façon dont on récupère les informations utilisateurs,
+les rôles et la hiérarchie existant entre ces rôles ainsi que les règles d'accès
+en fonction des roles.
+
+```yaml
+security:
+    encoders:
+        AppBundle\Entity\User:
+          algorithm: bcrypt
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        database:
+            entity:
+                class: AppBundle:User
+                property: username
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_AUTHOR, ROLE_WRITER]
+
+    firewalls:
+    # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: true
+            provider: database
+
+            form_login:
+                login_path: login
+                check_path: login
+
+            logout:
+                path: /logout
+                target: /
+
+    access_control:
+	- { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, roles: [ROLE_AUTHOR, ROLE_WRITER]}
+```
+* Les mots de passes sont chiffrés avec bcrypt.
+* L'identification se fera sur la propriété username.
+* il y a deux role ROLE_AUTHOR et ROLE_WRITER.
+* seul ROLE_AUTHOR et ROLE_WRITER pourront avoir accès à la partie d'administration.
+* les utilisateurs non authentifiés pourront accèder aux pages de login, d'enregistrement
+de "reset" de compte.
+

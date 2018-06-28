@@ -24,6 +24,8 @@
    * [Les vues twig](#les-vues-twig)
      * [Configuration des chemins](#configuration-des-chemins)
      * [Présentation des templates](#présentation-des-templates)
+ * [Gestion d'utilisateurs avec FOSUser](#gestion-d-'-utilisateurs-avec-fosuser)
+   * [Installation de FOSUser](#installation-de-fosuser)
 
 ## Installation et configuration
 
@@ -960,3 +962,16 @@ index a53dac7..dc6d010 100644
 ```
 
 ##### Présentation des templates
+
+## Gestion d'utilisateurs avec FOSUser
+
+Symfony embarque [des composants liés à la sécurité](http://symfony.com/doc/3.4/security.html)
+permettant de facilement mettre en place une gestion d'utilisateur : authenfification et
+restriction d'accès à toutes ou parties du site. Il existe un bundle installable
+via composer simplifiant reposant entièrement sur le système `security` :
+[FOSUserBundle](http://symfony.com/doc/master/bundles/FOSUserBundle/index.html).
+Ce bundle permet de mettre en place l'enregistrement d'utilisateur en base de donnée,
+les fonctionnalités d'enregistrement/inscription d'utilisateurs, la création de
+page de profile et le reset de mot de passe.
+
+### Installation de FOSUser
